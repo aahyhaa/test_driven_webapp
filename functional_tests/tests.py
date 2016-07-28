@@ -4,8 +4,16 @@ from django.test import LiveServerTestCase
 import time
 import unittest
 class NewVisitorTest(LiveServerTestCase,unittest.TestCase):
+    def test_layout_and_styling(self):
+	self.browser.get(self.live_server_url)
+	self.browser.set_window_size(1024,768)
+	
+	inputbox=self.browser.find_element_by_id('id_new_item')
+	inputbox.send_keys('testing\n')
+	inputbox=self.browser.find_element_by_id('id_new_item')
+	self.assertAlmostEqual(inputbox.location['x']+inputbox.size['width']/2,512,delta=10)
     def setUp(self):
-        self.browser=webdriver.Firefox()
+        self.browser=webdriver.Chrome()
         self.browser.implicitly_wait(15)
 	#self.live_server_url='http://localhost:8000/'
     def tearDown(self):
@@ -51,6 +59,6 @@ class NewVisitorTest(LiveServerTestCase,unittest.TestCase):
 	page_text=self.browser.find_element_by_tag_name('body').text
 	self.assertNotIn('Buy peacock feathers',page_text)
 	self.assertIn('Buy milk',page_text)
-	self.fail('Finish the test!')
+	#self.fail('Finish the test!')
 
 
